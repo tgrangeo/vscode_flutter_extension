@@ -12,11 +12,23 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<TreeItemNode>
 
   getChildren(element?: TreeItemNode): vscode.ProviderResult<TreeItemNode[]> {
     if (!element) {
-      return [new TreeItemNode("Snippet", vscode.TreeItemCollapsibleState.Expanded)];
+      // Two root-level sections: "Snippet" and "Script"
+      return [
+        new TreeItemNode("Snippet", vscode.TreeItemCollapsibleState.Expanded),
+        new TreeItemNode("Script", vscode.TreeItemCollapsibleState.Expanded),
+      ];
     }
 
     if (element.label === "Snippet") {
-      return [new InputTriggerItem("add a widget", 'xefi-flutter.createWidget'),new InputTriggerItem("add a model", 'xefi-flutter.createModel')];
+      return [
+        new InputTriggerItem("add a view controller", 'xefi-flutter.createViewController'),
+      ];
+    }
+
+    if (element.label === "Script") {
+      return [
+        new InputTriggerItem("Run build_runner", 'xefi-flutter.runBuildRunner'),
+      ];
     }
 
     return [];

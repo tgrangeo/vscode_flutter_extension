@@ -6,19 +6,20 @@
   "engines": {
     "vscode": "^1.101.0"
   },
-  "categories": ["Other"],
-  "activationEvents": [
+  "categories": [
+    "Other"
   ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "xefi-flutter.createWidget",
-        "title": "xefi create widget"
+        "command": "xefi-flutter.createViewController",
+        "title": "xefi create view controller"
       },
       {
-        "command": "xefi-flutter.createModel",
-        "title": "xefi create model"
+        "command": "xefi-flutter.runBuildRunner",
+        "title": "Run Dart Build Runner"
       }
     ],
     "viewsContainers": {
