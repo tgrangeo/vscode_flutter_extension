@@ -1,18 +1,34 @@
 import { TreeItemNode } from './TreeItemNode';
 import * as vscode from 'vscode';
+import * as path from 'path';
+
+interface InputTriggerParams {
+  label: string;
+  command: string;
+  tooltip: string;
+  desc: string;
+  icon?: string;
+  context: vscode.ExtensionContext;
+}
 
 export class InputTriggerItem extends TreeItemNode {
-  constructor(label: string, command: string) {
+  constructor({ label, command, tooltip, desc, icon, context }: InputTriggerParams) {
     super(label, vscode.TreeItemCollapsibleState.None, {
-      command: command,
+      command,
       title: 'Prompt input',
       arguments: [label],
     });
 
-    this.tooltip = 'Ajouter un widget';
-    this.description = 'Clique ici';
+    this.tooltip = tooltip;
+    this.description = desc;
 
-    // Ajoute une icône VSCode intégrée, ex : 'add' ou 'symbol-event' ou autre
-    this.iconPath = new vscode.ThemeIcon('add');
+    if (icon) {
+      if (icon.startsWith('media/')) {
+        const fullPath = vscode.Uri.file(context.asAbsolutePath(icon));
+        this.iconPath = fullPath;
+      } else {
+        this.iconPath = new vscode.ThemeIcon(icon);
+      }
+    }
   }
 }

@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
-import { Input } from '../utils/utils';
-import { generateBindingsFile, generateControllerFile, generateViewFile } from '../snippets/view_controller_getx';
+import { Input, MonoRepoChooseApp, selectFolderRecursively } from '../../utils/utils';
+import { generateBindingsFile, generateControllerFile, generateViewFile } from '../../snippets/view_controller_getx';
+import { isMono } from '../../utils/settings';
+import { createTestFile } from '../standalone/create_test';
 
 export async function createViewControllerPrompt() {
-  const className = await Input("Nom de la View (ex: MyFeature)");
-  if (!className) return;
 
   const workspace = vscode.workspace.workspaceFolders?.[0];
   if (!workspace) {
@@ -12,31 +12,31 @@ export async function createViewControllerPrompt() {
     return;
   }
 
-  let currentUri = vscode.Uri.joinPath(workspace.uri, 'lib');
+  let baseUri: vscode.Uri;
+
+  if (isMono()) {
+    const appName = await MonoRepoChooseApp();
+    if (!appName) return;
+    baseUri = vscode.Uri.joinPath(workspace.uri, 'lib', appName, 'view');
+  } else {
+    baseUri = vscode.Uri.joinPath(workspace.uri, 'lib/view');
+  }
+
   try {
-    await vscode.workspace.fs.stat(currentUri);
+    await vscode.workspace.fs.stat(baseUri);
   } catch {
-    vscode.window.showErrorMessage("Dossier lib/ introuvable.");
-    return;
+    await vscode.workspace.fs.createDirectory(baseUri);
+    vscode.window.showInformationMessage(`📁 Dossier ${vscode.workspace.asRelativePath(baseUri)} créé automatiquement.`);
   }
 
-  while (true) {
-    const entries = await vscode.workspace.fs.readDirectory(currentUri);
-    const folders = entries.filter(([_, type]) => type === vscode.FileType.Directory);
-    const choices = folders.map(([name]) => name);
-    choices.unshift('[Créer ici]');
-    const picked = await vscode.window.showQuickPick(choices, {
-      placeHolder: `Choisis un dossier dans ${vscode.workspace.asRelativePath(currentUri)}`
-    });
+  const selectedUri = await selectFolderRecursively(baseUri);
+  if (!selectedUri) return;
 
-    if (!picked) return;
-    if (picked === '[Créer ici]') break;
-
-    currentUri = vscode.Uri.joinPath(currentUri, picked);
-  }
+  const className = await Input("Nom de la View (ex: MyFeature)");
+  if (!className) return;
 
   const snakeCase = className.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
-  const folderUri = vscode.Uri.joinPath(currentUri, snakeCase);
+  const folderUri = vscode.Uri.joinPath(selectedUri, snakeCase);
   await vscode.workspace.fs.createDirectory(folderUri);
 
   const files = [
@@ -51,7 +51,7 @@ export async function createViewControllerPrompt() {
     {
       name: `${snakeCase}_bindings.dart`,
       content: generateBindingsFile(className),
-    }
+    },
   ];
 
   for (const file of files) {
@@ -64,4 +64,7 @@ export async function createViewControllerPrompt() {
   }
 
   vscode.window.showInformationMessage(`✅ Fichiers ${className}View, Controller et Bindings créés dans ${vscode.workspace.asRelativePath(folderUri)}`);
+
+  await createTestFile({ path: baseUri.path, className: `${snakeCase}_controller` });
 }
+

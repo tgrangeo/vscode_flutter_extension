@@ -4,26 +4,28 @@ exports.generateNavigationEntry = generateNavigationEntry;
 exports.generateBindingsFile = generateBindingsFile;
 exports.generateControllerFile = generateControllerFile;
 exports.generateViewFile = generateViewFile;
+const settings_1 = require("../utils/settings");
 function generateNavigationEntry(className, classNameLower) {
     return `// ****************************************
-//          NAVIGATION SET-UP
-// ****************************************
-// Add this to navigation folder/file/Service
-String ${classNameLower} = '/${classNameLower}';
-
-GetPage(
-  title: '${classNameLower}',
-  name: ${classNameLower},
-  page: () => const ${className}View(),
-  binding: ${className}Bindings(),
-),`;
+  //          NAVIGATION SET-UP
+  // ****************************************
+  // Add this to navigation folder/file/Service
+  String ${classNameLower} = '/${classNameLower}';
+  
+  GetPage(
+    title: '${classNameLower}',
+    name: ${classNameLower},
+    page: () => const ${className}View(),
+    binding: ${className}Bindings(),
+  ),`;
 }
 function generateBindingsFile(className) {
+    const name = (0, settings_1.packageName)();
     return `// ****************************************
 //             BINDING FILE
 // ****************************************
 // Change repository with a dependencie if you have one.
-import 'package:yotta_city/core/service/navigation_service.dart';
+import 'package:${name}/core/service/navigation_service.dart';
 import 'package:get/get.dart';
 
 class ${className}Bindings extends Bindings {
@@ -68,11 +70,12 @@ class ${className}Controller extends GetxController with StateMixin {
 }`;
 }
 function generateViewFile(className) {
+    const name = (0, settings_1.packageName)();
     return `// ****************************************
 //                VIEW FILE
 // ****************************************
-import 'package:yotta_city/view/common/empty_page.dart';
-import 'package:yotta_city/view/common/error_page.dart';
+import 'package:${name}/view/common/empty_page.dart';
+import 'package:${name}/view/common/error_page.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -1,27 +1,31 @@
+import { packageName } from "../utils/settings";
+
 export function generateNavigationEntry(
   className: string,
   classNameLower: string
 ): string {
-  return `// ****************************************
-//          NAVIGATION SET-UP
-// ****************************************
-// Add this to navigation folder/file/Service
-String ${classNameLower} = '/${classNameLower}';
 
-GetPage(
-  title: '${classNameLower}',
-  name: ${classNameLower},
-  page: () => const ${className}View(),
-  binding: ${className}Bindings(),
-),`;
+  return `// ****************************************
+  //          NAVIGATION SET-UP
+  // ****************************************
+  // Add this to navigation folder/file/Service
+  String ${classNameLower} = '/${classNameLower}';
+  
+  GetPage(
+    title: '${classNameLower}',
+    name: ${classNameLower},
+    page: () => const ${className}View(),
+    binding: ${className}Bindings(),
+  ),`;
 }
 
 export function generateBindingsFile(className: string): string {
+  const name: string = packageName()
   return `// ****************************************
 //             BINDING FILE
 // ****************************************
 // Change repository with a dependencie if you have one.
-import 'package:yotta_city/core/service/navigation_service.dart';
+import 'package:${name}/core/service/navigation_service.dart';
 import 'package:get/get.dart';
 
 class ${className}Bindings extends Bindings {
@@ -66,12 +70,14 @@ class ${className}Controller extends GetxController with StateMixin {
   }
 }`;
 }
+
 export function generateViewFile(className: string): string {
+  const name: string = packageName()
   return `// ****************************************
 //                VIEW FILE
 // ****************************************
-import 'package:yotta_city/view/common/empty_page.dart';
-import 'package:yotta_city/view/common/error_page.dart';
+import 'package:${name}/view/common/empty_page.dart';
+import 'package:${name}/view/common/error_page.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -104,7 +104,7 @@ abstract class ${className}Dto with _\$${className}Dto {
     @JsonKey(name: 'attribute8') String? attribute8,
     @JsonKey(name: 'attribute9') String? attribute9,
   }) = _${className}Dto;
-
+ 
   factory ${className}Dto.fromJson(Map<String, dynamic> json) =>
       _\$${className}DtoFromJson(json);
 }`;

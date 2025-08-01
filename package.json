@@ -14,20 +14,93 @@
   "contributes": {
     "commands": [
       {
-        "command": "xefi-flutter.createViewController",
-        "title": "xefi create view controller"
+        "command": "xefi-flutter.openWiki",
+        "title": "Open Wiki"
+      },
+      {
+        "command": "xefi-flutter.openAppleConnect",
+        "title": "App Store Connect"
+      },
+      {
+        "command": "xefi-flutter.openPlayStore",
+        "title": "Google Play Console"
       },
       {
         "command": "xefi-flutter.runBuildRunner",
-        "title": "Run Dart Build Runner"
+        "title": "Run build_runner"
+      },
+      {
+        "command": "xefi-flutter.createViewController",
+        "title": "Add a ViewController"
+      },
+      {
+        "command": "xefi-flutter.createEntityDtoMapper",
+        "title": "Add an Entity (Dto + Mapper)"
+      },
+      {
+        "command": "xefi-flutter.createUseCase",
+        "title": "Add a Use Case"
+      },
+      {
+        "command": "xefi-flutter.createTest",
+        "title": "Add a Test File"
+      },
+      {
+        "command": "xefi-flutter.createView",
+        "title": "Add a View"
+      },
+      {
+        "command": "xefi-flutter.createController",
+        "title": "Add a Controller"
+      },
+      {
+        "command": "xefi-flutter.createBindings",
+        "title": "Add Bindings"
+      },
+      {
+        "command": "xefi-flutter.createWidgetGetx",
+        "title": "Add a GetX Widget in a View"
+      },
+      {
+        "command": "xefi-flutter.createUseCaseFromExplorer",
+        "title": "🚀 Add a Use Case"
+      },
+      {
+        "command": "xefi-flutter.createServiceFromExplorer",
+        "title": "🚀 Add a Service"
+      },
+      {
+        "command": "xefi-flutter.createDtoFromExplorer",
+        "title": "🚀 Add a Dto"
       }
     ],
+    "configuration": {
+      "title": "Xefi Flutter Toolkit",
+      "type": "object",
+      "properties": {
+        "Xefi Flutter Toolkit.isMonoRepo": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ajoute une etape de selection de l'app si vous en avez plusieurs dans votre dossier lib"
+        },
+        "Xefi Flutter Toolkit.packageName": {
+          "type": "string",
+          "default": "",
+          "description": "Definit le nom de votre package pour les imports de fichier"
+        },
+        "Xefi Flutter Toolkit.urlGitlab": {
+          "type": "string",
+          "default": "",
+          "description": "Definit l'url de votre repo urlGitlab"
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {
           "id": "myExtension",
-          "title": "Mon Extension",
-          "icon": "media/icon.svg"
+          "title": "Xefi Flutter Toolkit",
+          "icon": "media/icon_alternative.svg"
         }
       ]
     },
@@ -35,8 +108,32 @@
       "myExtension": [
         {
           "id": "myView",
-          "name": "Vue principale",
-          "icon": "media/icon.svg"
+          "name": "",
+          "icon": "media/icon_alternative.svg"
+        }
+      ]
+    },
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "xefi-flutter.createUseCaseFromExplorer",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder && resourceFilename == 'use_case'"
+        },
+        {
+          "command": "xefi-flutter.createView",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder && resourceFilename == 'view'"
+        },
+        {
+          "command": "xefi-flutter.createServiceFromExplorer",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder && resourceFilename == 'service'"
+        },
+        {
+          "command": "xefi-flutter.createDtoFromExplorer",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder && resourceFilename == 'dto'"
         }
       ]
     }
@@ -50,14 +147,17 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.101.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/vscode": "^1.101.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^9.25.1",
-    "typescript": "^5.8.3",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "change-case": "^5.4.4"
   }
 }

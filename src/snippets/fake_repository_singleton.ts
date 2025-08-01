@@ -1,7 +1,10 @@
+import { packageName } from "../utils/settings";
+
 export function generateFakeRepositorySingleton(widgetName: string, classNameWithoutMaj: string): string {
-  return `import 'package:yotta_city/data/dto/${classNameWithoutMaj}_dto/${classNameWithoutMaj}_dto.dart';
-import 'package:yotta_city/domain/${classNameWithoutMaj}/mapper/${classNameWithoutMaj}_mapper.dart';
-import 'package:yotta_city/domain/${classNameWithoutMaj}/${classNameWithoutMaj}.dart';
+  const name = packageName();
+  return `import 'package:${name}/data/dto/${classNameWithoutMaj}_dto/${classNameWithoutMaj}_dto.dart';
+import 'package:${name}/domain/${classNameWithoutMaj}/mapper/${classNameWithoutMaj}_mapper.dart';
+import 'package:${name}/domain/${classNameWithoutMaj}/${classNameWithoutMaj}.dart';
 
 class ${widgetName}Repository {
   ${widgetName}Repository._internal() {
